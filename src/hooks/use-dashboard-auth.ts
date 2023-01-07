@@ -1,3 +1,3 @@
 export default function useDashboardAuth() {
-    return false;
+    return true;
 }
