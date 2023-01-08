@@ -1,5 +1,5 @@
 /**
- * wordpress dependencies 
+ * External dependencies 
  */ 
 import { createReduxStore, register } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';

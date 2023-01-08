@@ -9,7 +9,7 @@ interface InitialState {
 
 const initialState = {
     sideMenuOpen: window.innerWidth >= 678,
-    pageTitle: 'Overview',
+    pageTitle: '',
 }
 
 document.title = initialState.pageTitle;

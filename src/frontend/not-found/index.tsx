@@ -1,12 +1,19 @@
 import { doAction } from '@wordpress/hooks';
 import { useEffect } from 'react';
 
-export default function NotFound() {
+interface NotFoundProps {
+    title: string;
+    menu?: object
+}
+
+const NotFound: React.FC<NotFoundProps> = ( props ) => {
     useEffect(() => {
-        doAction('set-page-title', '404')
+        doAction( 'set-page-title' , props.title)
     }, [])
 
     return (
         <h1>404 page not found</h1>
     )
 }
+
+export default NotFound;

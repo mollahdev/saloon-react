@@ -1,9 +1,13 @@
 import { doAction } from '@wordpress/hooks';
 import { useEffect } from 'react';
 
-export default function Overview() {
+interface OverviewProps {
+    title: string;
+    menu?: object
+}
+const Overview: React.FC<OverviewProps> = ( props ) => {
     useEffect(() => {
-        doAction('set-page-title', 'Overview')
+        doAction('set-page-title', props.title)
     }, [])
 
     return (
@@ -18,3 +22,5 @@ export default function Overview() {
         </div>
     )
 }
+
+export default Overview;
