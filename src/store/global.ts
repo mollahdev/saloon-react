@@ -1,15 +1,29 @@
 import { createReduxStore, register, dispatch } from '@wordpress/data';
 import { addAction } from '@wordpress/hooks';
 import { ReducerAction } from 'types/store';
+import { UserInterface } from 'types/common';
+import { ROLES } from 'types/enum';
 
 interface InitialState {
     sideMenuOpen: boolean,
     pageTitle: string,
+    avatorDropdownStatus: boolean,
+    currentUser: UserInterface & {
+        request?: 'pending' | 'done'
+    }
 }
 
-const initialState = {
+const initialState: InitialState = {
     sideMenuOpen: window.innerWidth >= 678,
     pageTitle: '',
+    avatorDropdownStatus: false,
+    currentUser: {
+        login: false,
+        name: 'Ashraf',
+        role: ROLES.ADMIN,
+        request: 'pending',
+        image: 'https://i.ibb.co/SsTN7qQ/dummy-profile.png'
+    }
 }
 
 document.title = initialState.pageTitle;
@@ -18,13 +32,25 @@ const STORE_REDUCER = ( state: InitialState = initialState, action: ReducerActio
         case 'SET_SIDEMENU_OPEN_STATUS':
             return {
                 ...state,
-                sideMenuOpen: action.payload as boolean
+                sideMenuOpen: action.payload as typeof initialState.sideMenuOpen
             };
         
         case 'SET_PAGE_TITLE':
             return {
                 ...state,
-                pageTitle: action.payload as string
+                pageTitle: action.payload as typeof initialState.pageTitle
+            };
+
+        case 'SET_CURRENT_USER':
+            return {
+                ...state,
+                currentUser: action.payload as typeof initialState.currentUser
+            };
+        
+        case 'SET_AVATOR_DROPDOWN_OPEN':
+            return {
+                ...state,
+                avatorDropdownStatus: action.payload as typeof initialState.avatorDropdownStatus
             };
     }
 
@@ -43,6 +69,18 @@ const STORE_ACTIONS = {
             type: 'SET_PAGE_TITLE',
             payload: data,
         };
+    },
+    setCurrentUser( data: object ) {
+        return {
+            type: 'SET_CURRENT_USER',
+            payload: data,
+        };
+    },
+    setIsAvatarDropdownOpen( data: boolean ) {
+        return {
+            type: 'SET_AVATOR_DROPDOWN_OPEN',
+            payload: data,
+        };
     }
 }
 
@@ -53,6 +91,12 @@ const STORE_SELECTORS = {
     getPageTitle( state: InitialState ) {
         return state.pageTitle
     },
+    getCurrentUser( state: InitialState ) {
+        return state.currentUser
+    },
+    isAvatarDropdownOpen( state: InitialState ) {
+        return state.avatorDropdownStatus
+    }
 }
 
 register( createReduxStore( 'global', {
@@ -61,8 +105,25 @@ register( createReduxStore( 'global', {
     selectors   : STORE_SELECTORS,
 }))
 
+/**
+ * Hooks 
+ */ 
+
 const dispatchState = dispatch('global');
-addAction('set-page-title', 'global-state', function( title: string ) {
+addAction('set-page-title', 'global', function( title: string ) {
     document.title = title;
     dispatchState.setPageTitle( title )
+})
+
+addAction('authenticate-user', 'global', function() {
+    console.log('authenticating...')
+    setTimeout(() => {
+        dispatchState.setCurrentUser({
+            login: true,
+            name: 'Ashraf',
+            role: ROLES.ADMIN,
+            request: 'done',
+            image: 'https://i.ibb.co/SsTN7qQ/dummy-profile.png'
+        })
+    }, 2000)
 })

@@ -2,20 +2,25 @@
  * External dependencies 
  */ 
 import { Navigate, Outlet } from "react-router-dom";
+import { compose } from '@wordpress/compose';
+import { withSelect } from '@wordpress/data';
 import Box from '@mui/material/Box';
 /**
  * Internal dependencies 
  */ 
-import useDashboardAuth from "hooks/use-dashboard-auth";
 import AppDrawer from "hoc/dashboard-private-navigator/drawer";
 import Header from "hoc/dashboard-private-navigator/header";
 import { DrawerHeader, PageWrapper } from "hoc/dashboard-private-navigator/elements";
+import { UserInterface } from "types/common";
 
-const DashboardPrivateNavigator: React.FC = () => {
-    const access = useDashboardAuth();
-    
+type PropsInterface = {
+    user: UserInterface
+}
+
+const DashboardPrivateNavigator: React.FC<PropsInterface> = (props) => {
+    const { user } = props
     return (
-        access ? (
+        ( user && user.login ) ? (
             <Box sx={{ display: 'flex' }}>
                 <Header/>
                 <AppDrawer/>
@@ -24,8 +29,17 @@ const DashboardPrivateNavigator: React.FC = () => {
                     <Outlet/>
                 </PageWrapper>
             </Box>
-        ) : <Navigate to="/admin-login"/>
+        ) : <Navigate to="/admin-login" replace/>
     );
 }
 
-export default DashboardPrivateNavigator;
+const applyWithSelect = withSelect( (select: Function) => {
+    const global = select('global');
+    return {
+        user: global.getCurrentUser()
+    }
+} )
+
+export default compose(
+    applyWithSelect
+)( DashboardPrivateNavigator ) as React.FC;

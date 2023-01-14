@@ -1,21 +1,35 @@
 /**
  * External dependencies 
  */ 
-import MailIcon from '@mui/icons-material/Mail';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { Routes, Route, Navigate } from "react-router-dom"
 import { addFilter } from '@wordpress/hooks';
+/**
+ * External material icons
+ */ 
+import InsightsIcon from '@mui/icons-material/Insights';
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import ContentCutIcon from '@mui/icons-material/ContentCut';
+import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 /**
  * Internal dependencies 
  */ 
 import DashboardPrivateNavigator from "hoc/dashboard-private-navigator";
+import ValidatePrivateRoute from 'hoc/validate-private-route';
 import DashboardLogin from "frontend/dashboard-login";
 import Overview from "admin/overview";
 import NotFound from "frontend/not-found";
-import Service from "admin/service";
 import Home from 'frontend/home';
-import { Roles } from "types/enum";
+import BootLoader from "components/boot-loader";
 
+import { default as AdminServices } from "admin/services";
+import { default as AdminAppointments } from 'admin/appointments';
+import { default as AdminBarbers } from "admin/barbers";
+
+import { ROLES } from "types/enum";
+
+/**
+ * App pages with sidebar menu
+ */ 
 const routes = {
   public: [
     {
@@ -31,65 +45,68 @@ const routes = {
     {
       title : 'Services | Big Apple Barber Shop',
       path  : 'service',
-      page  : Service,
+      page  : AdminServices,
     },
-    {
-      title : '404 | Big Apple Barber Shop',
-      path  : '*',
-      page  : NotFound
-    }
   ],
 
   private: [
     {
-      title: '',
-      path: '',
-      page() {
-        return <Navigate to="overview"/>
-      }
-    },
-    {
-      title : 'Overview | Dashboard',
       path : 'overview',
       page  : Overview,
-      role  : [ Roles.ADMIN ],
+      role  : [ ROLES.ADMIN, ROLES.EDITOR, ROLES.VIEWER ],
       menu: {
         label : 'Overview',
-        icon  : MailIcon
+        icon  : InsightsIcon
       }
     },
     {
-      title : 'Services | Dashboard',
-      path  : 'service',
-      page  : Service,
-      role  : [ Roles.ADMIN ],
+      path : 'appointments',
+      page  : AdminAppointments,
+      role  : [ ROLES.ADMIN, ROLES.EDITOR, ROLES.VIEWER ],
+      menu: {
+        label : 'Appointments',
+        icon  : PermContactCalendarIcon
+      }
+    },
+    {
+      path  : 'services',
+      page  : AdminServices,
+      role  : [ ROLES.ADMIN ],
       menu  : {
         label : 'Services',
-        icon  : InboxIcon
+        icon  : ContentCutIcon
       }
     },
     {
-      title : '404 | Dashboard',
-      path  : '*',
-      page  : NotFound,
-      role  : [ Roles.ADMIN, Roles.EDITOR, Roles.VIEWER ],
-    }
+      path  : 'barbers',
+      page  : AdminBarbers,
+      role  : [ ROLES.ADMIN ],
+      menu  : {
+        label : 'Barbers',
+        icon  : ConnectWithoutContactIcon
+      }
+    },
   ]
 }
-// create and attach dashboard sidemenu
+
+/**
+ * 
+ * create and attach dashboard sidemenu
+ * 
+*/
 addFilter('side-menu-list', 'app', () => routes.private)
 
-// main router component
 const App: React.FC = () => {
   return (
     <Routes>
-        <Route path="/*">
+        <Route path="/*" element={<BootLoader/>}>
           { ( routes.public ).map(( item, index ) => (
             <Route 
               key={index} 
               path={ item.path }
               element={<item.page title={item.title}/>}/>
           ) ) }
+          <Route path="*" element={<NotFound/>}/>
         </Route>
         
         <Route path="admin/*" element={<DashboardPrivateNavigator/>}>
@@ -97,8 +114,14 @@ const App: React.FC = () => {
             <Route 
               key={index}
               path={ item.path }
-              element={<item.page menu={item.menu} title={(item.menu || {label: 'Overview'}).label}/>}/>
+              element={
+                <ValidatePrivateRoute role={item.role} title={item.menu.label}>
+                  <item.page/>
+                </ValidatePrivateRoute>
+              }/>
           ) ) }
+          <Route index element={<Navigate to="overview" replace/>}/>
+          <Route path="*" element={<NotFound/>}/>
         </Route>
     </Routes>
   );

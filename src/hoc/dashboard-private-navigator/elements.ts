@@ -27,6 +27,8 @@ const closedMixin = (theme: Theme): CSSObject => ({
 });
 
 export const PageWrapper = styled(Box)`
+	background-image: linear-gradient(108.81deg, #F5FBFF 14.86%, #F6F5FF 99.99%);
+	min-height: 100vh;
 	@media( max-width: 768px ) {
 		margin-left: 56px;
 	}
@@ -49,6 +51,9 @@ export const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
     zIndex: theme.zIndex.drawer + 1,
+	boxShadow: 'none',
+	backgroundColor: '#d0e7fd',
+	color: '#101010',
     transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,

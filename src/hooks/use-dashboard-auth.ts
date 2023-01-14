@@ -1,3 +1,6 @@
 export default function useDashboardAuth() {
-    return true;
+    return {
+        login: true,
+        role: 'admin'
+    };
 }

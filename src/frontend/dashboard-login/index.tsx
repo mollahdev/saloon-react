@@ -1,14 +1,11 @@
 /**
- * Internal dependencies 
- */ 
-import useDashboardAuth from "hooks/use-dashboard-auth"
-import { PageWrapper, LockIconWrap } from "frontend/dashboard-login/elements";
-/**
  * External dependencies 
  */ 
 import LockPersonOutlinedIcon from '@mui/icons-material/LockPersonOutlined';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { compose } from '@wordpress/compose';
+import { withSelect } from '@wordpress/data';
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom"
 import { Container } from "@mui/system";
@@ -17,23 +14,28 @@ import { SvgIcon, IconButton, Card, CardContent, TextField, Typography, FormCont
     InputAdornment, OutlinedInput, InputLabel, FormGroup, FormControlLabel, Checkbox, Grid, 
     Button, Link
 } from "@mui/material";
-
+/**
+ * Internal dependencies 
+ */ 
+import { PageWrapper, LockIconWrap } from "frontend/dashboard-login/elements";
+import { UserInterface } from 'types/common';
 
 interface DashboardLoginProps {
     title: string;
-    menu?: object
+    menu?: object;
+    user: UserInterface,
 }
 
 const DashboardLogin: React.FC<DashboardLoginProps> = ( props ) => {
-    const isDashboardLoggined = useDashboardAuth();
+    const { user, title } = props;
     const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
-        doAction( 'set-page-title' , props.title)
+        doAction( 'set-page-title' , title)
     }, [])
 
-    if( isDashboardLoggined ) {
-        return <Navigate to="/admin"/>
+    if( user.login ) {
+        return <Navigate to="/admin" replace/>
     }
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -89,4 +91,14 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ( props ) => {
     )
 }
 
-export default DashboardLogin
+
+const applyWithSelect = withSelect( (select: Function) => {
+    const global = select('global');
+    return {
+        user: global.getCurrentUser()
+    }
+} )
+
+export default compose(
+    applyWithSelect
+)( DashboardLogin ) as React.FC;
