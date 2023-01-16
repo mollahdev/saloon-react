@@ -7,6 +7,9 @@ import { doAction } from "@wordpress/hooks";
  * Internal dependencies 
  */ 
 import { UserInterface } from "types/common";
+import { BootWrapper } from "components/boot-loader/elements";
+import whiteLogo from 'images/white-big-logo.png';
+
 
 type BootLoaderProps = {
     user: UserInterface & {
@@ -41,9 +44,12 @@ const BootLoader: React.FC<BootLoaderProps> = ( props ) => {
 
     return (
         <Fragment>
-            { user.request === 'pending' ? <div>
-                <h1>Pending</h1>
-            </div>: <Outlet/>}
+            { user.request === 'pending' ? <BootWrapper>
+                <div>
+                    <img width="270" src={whiteLogo} alt="white-logo"/>
+                    <p>Loading...</p>
+                </div>
+            </BootWrapper>: <Outlet/>}
         </Fragment>
     )
 }

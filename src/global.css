@@ -7,3 +7,8 @@
 .active-dashboard-nav-menu {
     background-color: #eee;
 }
+
+@keyframes fade {
+    0%, 100% { opacity: .5 }
+    50% { opacity: 1 }
+}

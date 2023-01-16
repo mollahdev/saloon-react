@@ -26,7 +26,9 @@ const Header: React.FC<HeaderProps> = props => {
 
     const handleDrawerOpen = () => {
         setSideMenuOpenStatus(!open);
-        setIsAvatarDropdownOpen(!Boolean(window.innerWidth <= 575));
+        if( window.innerWidth <= 575 ) {
+            setIsAvatarDropdownOpen(false);
+        }
     }
 
     return (

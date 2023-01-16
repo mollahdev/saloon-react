@@ -52,7 +52,7 @@ export const AppBar = styled(MuiAppBar, {
 })<AppBarProps>(({ theme, open }) => ({
     zIndex: theme.zIndex.drawer + 1,
 	boxShadow: 'none',
-	backgroundColor: '#d0e7fd',
+	backgroundColor: '#aecfef',
 	color: '#101010',
     transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -66,6 +66,7 @@ export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
 		flexShrink: 0,
 		whiteSpace: 'nowrap',
 		boxSizing: 'border-box',
+		zIndex: 99,
 		...(open && {
 			...openedMixin(theme),
 			'& .MuiDrawer-paper': openedMixin(theme),

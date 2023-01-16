@@ -19,8 +19,8 @@ const initialState: InitialState = {
     avatorDropdownStatus: false,
     currentUser: {
         login: false,
-        name: 'Ashraf',
-        role: ROLES.ADMIN,
+        name: 'User',
+        role: ROLES.VIEWER,
         request: 'pending',
         image: 'https://i.ibb.co/SsTN7qQ/dummy-profile.png'
     }

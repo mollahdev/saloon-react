@@ -4,17 +4,15 @@
 import { compose } from '@wordpress/compose';
 import { withSelect, withDispatch } from '@wordpress/data';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import React, { Fragment } from 'react';
 /**
  * Internal dependencies 
  */ 
 import { 
     Wrapper, Image
 } from 'components/profile-avator/elements';
-
-/**
- * Internal dependencies 
- */ 
 import { UserInterface } from 'types/common';
+import AvatorDropdown from 'components/profile-avator/dropdown';
 
 type ProfileAvatorProps = {
     user            : UserInterface,
@@ -26,16 +24,22 @@ type ProfileAvatorProps = {
 const ProfileAvator: React.FC<ProfileAvatorProps> = ( props ) => {
     const { user, isDropdownOpen, setIsAvatarDropdownOpen, setSideMenuOpenStatus } = props;
 
-    const toggleDropdown = () => {
+    const toggleDropdown = (ev: React.SyntheticEvent) => {
+        ev.stopPropagation();
         setIsAvatarDropdownOpen( !isDropdownOpen );
-        setSideMenuOpenStatus(!Boolean(window.innerWidth <= 575));
+        if( window.innerWidth <= 575 ) {
+            setSideMenuOpenStatus(false);
+        }
     }
 
     return (
-        <Wrapper onClick={toggleDropdown} open={isDropdownOpen}>
-            <Image loading='lazy' width="35" height="35" src={user.image} alt="profile"/>
-            <ExpandMoreIcon/>
-        </Wrapper>
+        <Fragment>
+            <Wrapper onClick={toggleDropdown} open={isDropdownOpen}>
+                <Image loading='lazy' width="35" height="35" src={user.image} alt="profile"/>
+                <ExpandMoreIcon/>
+            </Wrapper>
+            <AvatorDropdown/>
+        </Fragment>
     )
 }
 
