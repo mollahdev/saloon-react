@@ -7,7 +7,7 @@ export const ServiceArchiveWrapper = styled(Box)`
     padding: var(--padding);
     display: grid;
     gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(235px, 400px));
 
     @media (max-width: 900px) {
         --padding: 15px;

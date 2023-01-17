@@ -18,12 +18,15 @@ import { SvgIcon, IconButton, Card, CardContent, TextField, Typography, FormCont
  * Internal dependencies 
  */ 
 import { PageWrapper, LockIconWrap } from "frontend/dashboard-login/elements";
+import BootLoader from 'components/boot-loader';
 import { UserInterface } from 'types/common';
 
 interface DashboardLoginProps {
     title: string;
     menu?: object;
-    user: UserInterface,
+    user: UserInterface & {
+        request: 'pending' | 'done'
+    },
 }
 
 const DashboardLogin: React.FC<DashboardLoginProps> = ( props ) => {
@@ -32,10 +35,18 @@ const DashboardLogin: React.FC<DashboardLoginProps> = ( props ) => {
 
     useEffect(() => {
         doAction( 'set-page-title' , title)
+        if( !user.login ) {
+            doAction('authenticate-user')
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    if( user.request === 'pending' ) {
+        return <BootLoader/>
+    }
+
     if( user.login ) {
-        return <Navigate to="/admin" replace/>
+        return <Navigate to="/admin/overview" replace/>
     }
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);

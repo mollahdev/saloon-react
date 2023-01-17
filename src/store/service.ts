@@ -10,14 +10,16 @@ import { ReducerAction } from 'types/store';
 import staticData from './static';
 
 interface InitialState {
-    list: {}[]
-    edit: {} 
+    list: {}[];
+    edit: {};
+    request: string;
 }
 
 apiFetch.use( apiFetch.createRootURLMiddleware( staticData.apiEndpoint ) );
 const initialState = {
     list: [],
-    edit: {}
+    edit: {},
+    request: 'pending',
 }
 
 const STORE_REDUCER = ( state: InitialState = initialState, action: ReducerAction ): InitialState => {
@@ -25,6 +27,7 @@ const STORE_REDUCER = ( state: InitialState = initialState, action: ReducerActio
         case 'SET_SERVICES':
             return {
                 ...state,
+                request: 'done',
                 list: action.payload as []
             };
         
@@ -97,7 +100,7 @@ const STORE_CONTROLS = {
 
 const STORE_RESOLVERS = {
     *getServices(): any {
-        const data = yield STORE_ACTIONS.fetchFromAPI( 'services' );
+        const data = yield STORE_ACTIONS.fetchFromAPI( 'private/service/all' );
         return STORE_ACTIONS.setServices( data.data );
     }
 }

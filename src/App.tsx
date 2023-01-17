@@ -19,9 +19,9 @@ import DashboardLogin from "frontend/dashboard-login";
 import Overview from "admin/overview";
 import NotFound from "frontend/not-found";
 import Home from 'frontend/home';
-import BootLoader from "components/boot-loader";
 
 import { default as AdminServices } from "admin/services";
+import { default as AdminServiceDetails } from "admin/services/details";
 import { default as AdminAppointments } from 'admin/appointments';
 import { default as AdminBarbers } from "admin/barbers";
 
@@ -51,40 +51,42 @@ const routes = {
 
   private: [
     {
+      title : 'Overview',
       path : 'overview',
       page  : Overview,
       role  : [ ROLES.ADMIN, ROLES.EDITOR, ROLES.VIEWER ],
-      menu: {
-        label : 'Overview',
-        icon  : InsightsIcon
-      }
+      icon  : InsightsIcon,
+      menu  : true,
     },
     {
+      title : 'Appointments',
       path : 'appointments',
       page  : AdminAppointments,
       role  : [ ROLES.ADMIN, ROLES.EDITOR, ROLES.VIEWER ],
-      menu: {
-        label : 'Appointments',
-        icon  : PermContactCalendarIcon
-      }
+      icon  : PermContactCalendarIcon,
+      menu  : true,
     },
     {
+      title : 'Services',
       path  : 'services',
       page  : AdminServices,
       role  : [ ROLES.ADMIN ],
-      menu  : {
-        label : 'Services',
-        icon  : ContentCutIcon
-      }
+      icon  : ContentCutIcon,
+      menu  : true,
     },
     {
+      title : 'Service Details',
+      path  : 'services/:id',
+      page  : AdminServiceDetails,
+      role  : [ ROLES.ADMIN ],
+    },
+    {
+      title : 'Barbers',
       path  : 'barbers',
       page  : AdminBarbers,
       role  : [ ROLES.ADMIN ],
-      menu  : {
-        label : 'Barbers',
-        icon  : ConnectWithoutContactIcon
-      }
+      icon  : ConnectWithoutContactIcon,
+      menu  : true,
     },
   ]
 }
@@ -99,7 +101,7 @@ addFilter('side-menu-list', 'app', () => routes.private)
 const App: React.FC = () => {
   return (
     <Routes>
-        <Route path="/*" element={<BootLoader/>}>
+        <Route path="/*">
           { ( routes.public ).map(( item, index ) => (
             <Route 
               key={index} 
@@ -115,7 +117,7 @@ const App: React.FC = () => {
               key={index}
               path={ item.path }
               element={
-                <ValidatePrivateRoute role={item.role} title={item.menu.label}>
+                <ValidatePrivateRoute role={item.role} title={item.title}>
                   <item.page/>
                 </ValidatePrivateRoute>
               }/>

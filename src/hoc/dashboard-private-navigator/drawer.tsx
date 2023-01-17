@@ -21,10 +21,9 @@ interface AppDrawerProps {
 
 interface menuItemInterface {
     path: string,
-    menu: {
-        label: string,
-        icon: React.FC
-    }
+    title: string,
+    menu: boolean,
+    icon: React.FC
 }
 
 const AppDrawer: React.FC<AppDrawerProps> = props => {
@@ -36,15 +35,15 @@ const AppDrawer: React.FC<AppDrawerProps> = props => {
             <DrawerHeader/>
             <List sx={{p: 0}}>
             {(menus || []).map((item: menuItemInterface, index) => {
-                if( !item.menu || !item.menu.icon || !item.menu.label ) return null;
+                if( !item.menu || !item.icon || !item.title ) return null;
                 return (
                     <ListItem key={index} disablePadding sx={{ display: 'block' }}>
                         <NavLink className={({ isActive }) => isActive ? 'active-dashboard-nav-menu' : undefined} to={item.path} style={{textDecoration: 'none', fontWeight: 500, color: '#101010', display: 'block'}}>
                             <ListItemButton sx={{minHeight: 48,justifyContent: open ? 'initial' : 'center', px: 2.5,}}>
                                 <ListItemIcon sx={{minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center',}}>
-                                    <item.menu.icon/>
+                                    <item.icon/>
                                 </ListItemIcon>
-                                <ListItemText primary={item.menu.label} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={item.title} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </NavLink>
                     </ListItem>
