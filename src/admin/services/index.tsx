@@ -1,6 +1,7 @@
 /**
  * External dependencies 
  */ 
+import { useNavigate } from "react-router-dom";
 import Card from '@mui/material/Card';
 import Alert from '@mui/material/Alert';
 import CardActions from '@mui/material/CardActions';
@@ -24,41 +25,45 @@ import Skeletons from 'admin/services/skeletons';
 
 interface ServicesProps {
     services: {}[]
-    isResolving: boolean
+    isResolving: boolean,
+    isSidebarOpen: boolean
 }
 
 const Services: React.FC<ServicesProps> = ( props ) => {
-    const { services, isResolving } = props;
+    const { services, isResolving, isSidebarOpen } = props;
+    const navigate = useNavigate();
 
     return (
         <ServiceArchiveWrapper>
             { isResolving ? <Skeletons/> : _.isEmpty(services) ? <Alert severity="info">No Service Available</Alert> : (
-                <Card>
-                    <CardMedia
-                        sx={{ height: 140 }}
-                        image={blackMast}
-                        title="green iguana"
-                    />
-                    <CardContent sx={{pb: '3px'}}>
-                        <Stack direction="row" spacing={1} sx={{mb: 1}}>
-                            <Chip label="Price $35" />
-                            <Chip label="Duration 45 mins" variant="outlined" />
-                        </Stack>
-                        <Typography gutterBottom variant="h6" component="h3"> Haircut & Beared Trim</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small" sx={{display: 'flex', alignItems: 'center', gap: '5px'}}>
-                            <SettingsIcon/>Settings</Button>
-                    </CardActions>
-                </Card>
+                <div className="archive-content">
+                    <Card>
+                        <CardMedia
+                            sx={{ height: 140 }}
+                            image={blackMast}
+                            title="green iguana"
+                        />
+                        <CardContent sx={{pb: '3px'}}>
+                            <Stack direction="row" spacing={1} sx={{mb: 1}}>
+                                <Chip label="Price $35" />
+                                <Chip label="Duration 45 mins" variant="outlined" />
+                            </Stack>
+                            <Typography gutterBottom variant="h6" component="h3"> Haircut & Beared Trim</Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Lizards are a widespread group of squamate reptiles, with over 6,000
+                                species, ranging across all continents except Antarctica
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small" sx={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+                                <SettingsIcon/>Settings</Button>
+                        </CardActions>
+                    </Card>
+                </div>
             )}
 
-            { !isResolving && (
-                <AddNewServiceBtn variant="extended" color="info" aria-label="add">
+            { !isResolving && !isSidebarOpen && (
+                <AddNewServiceBtn onClick={() => navigate("create")} variant="extended" color="info" aria-label="add">
                     <AddIcon sx={{ mr: 1 }} />Add New
                 </AddNewServiceBtn>
             ) }
@@ -69,10 +74,12 @@ const Services: React.FC<ServicesProps> = ( props ) => {
 
 const applyWithSelect = withSelect( (select: Function) => {
     const services = select('admin/service');
-  
+    const global = select('global');
+
     return {
         services: services.getServices(),
-        isResolving: services.getIsResolving('getServices')
+        isResolving: services.getIsResolving('getServices'),
+        isSidebarOpen: global.getSideMenuOpenStatus()
     }
 } ) 
 

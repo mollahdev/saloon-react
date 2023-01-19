@@ -21,6 +21,7 @@ import NotFound from "frontend/not-found";
 import Home from 'frontend/home';
 
 import { default as AdminServices } from "admin/services";
+import { default as AdminCreateService } from "admin/services/create";
 import { default as AdminServiceDetails } from "admin/services/details";
 import { default as AdminAppointments } from 'admin/appointments';
 import { default as AdminBarbers } from "admin/barbers";
@@ -73,6 +74,12 @@ const routes = {
       role  : [ ROLES.ADMIN ],
       icon  : ContentCutIcon,
       menu  : true,
+    },
+    {
+      title : 'Create Service',
+      path  : 'services/create',
+      page  : AdminCreateService,
+      role  : [ ROLES.ADMIN ],
     },
     {
       title : 'Service Details',

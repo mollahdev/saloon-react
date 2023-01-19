@@ -12,3 +12,7 @@
     0%, 100% { opacity: .5 }
     50% { opacity: 1 }
 }
+
+a {
+    text-decoration: none;
+}
