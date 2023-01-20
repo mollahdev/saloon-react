@@ -19,11 +19,12 @@ import { UserInterface } from "types/common";
 type PropsInterface = {
     user: UserInterface & {
         request: 'pending' | 'done'
-    }
+    },
+    isPageBlur: boolean,
 }
 
 const DashboardPrivateNavigator: React.FC<PropsInterface> = (props) => {
-    const { user } = props;
+    const { user, isPageBlur } = props;
     
     useEffect(() => {
         if( !user.login ) {
@@ -41,7 +42,7 @@ const DashboardPrivateNavigator: React.FC<PropsInterface> = (props) => {
             <Box sx={{ display: 'flex' }}>
                 <Header/>
                 <AppDrawer/>
-                <PageWrapper component="main" sx={{ flexGrow: 1 }}>
+                <PageWrapper isblur={String(isPageBlur)} component="main" sx={{ flexGrow: 1 }}>
                     <DrawerHeader />
                     <Outlet/>
                 </PageWrapper>
@@ -53,7 +54,8 @@ const DashboardPrivateNavigator: React.FC<PropsInterface> = (props) => {
 const applyWithSelect = withSelect( (select: Function) => {
     const global = select('global');
     return {
-        user: global.getCurrentUser()
+        user: global.getCurrentUser(),
+        isPageBlur: global.isPageBlur(),
     }
 } )
 

@@ -10,11 +10,19 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Box from '@mui/material/Box';
+import InputAdornment from '@mui/material/InputAdornment';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 /**
  * Internal dependencies 
  */ 
 import { GeneralWrapper, CreateForm } from 'admin/services/element';
+import ImageUpload from 'components/image-upload';
 
 const Create: React.FC = () => {
 
@@ -26,10 +34,15 @@ const Create: React.FC = () => {
         <GeneralWrapper>
             <Link to="/admin/services"><Button variant="text" startIcon={<ChevronLeftIcon />}>Back</Button></Link>
             <CreateForm component="form" noValidate autoComplete="off">
+                <Typography variant="h6">Photo</Typography>
+                <div className="form-content">
+                    <ImageUpload/>
+                </div>
+
                 <Typography variant="h6">General</Typography>
                 <div className="form-content">
                     <TextField size='medium' label="Service Name" variant="outlined" />
-                    <TextField label="Default Price" type="number"/>
+                    <TextField label="Default Price" variant="outlined" type="number"/>
                     <FormControl fullWidth>
                         <InputLabel id="duration-label">Duration</InputLabel>
                         <Select labelId="duration-label" label="Duration" onChange={handleChange}>
@@ -41,22 +54,63 @@ const Create: React.FC = () => {
                     </FormControl>
                 </div>
                 
-                <Typography variant="h6">Advanced</Typography>
+                <Typography variant="h6">Advanced Pricing</Typography>
                 <div className="form-content">
-                    <TextField size='medium' label="Service Name" variant="outlined" />
-                    <TextField label="Default Price" type="number"/>
-                    <TextField label="Default Price" type="number"/>
-                    <TextField label="Default Price" type="number"/>
-                    <FormControl fullWidth>
-                        <InputLabel id="duration-label">Duration</InputLabel>
-                        <Select labelId="duration-label" label="Duration" onChange={handleChange}>
-                            <MenuItem value={15}>15 Minutes</MenuItem>
-                            <MenuItem value={30}>30 Minutes</MenuItem>
-                            <MenuItem value={45}>45 Minutes</MenuItem>
-                            <MenuItem value={60}>60 Minutes</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <Box>
+                        <FormControlLabel sx={{mb: 2}}
+                            control={
+                                <Switch onChange={handleChange} name="gilad" />
+                            }
+                            label="Enable Individual Price"
+                        />
+                        <Box sx={{display: 'grid', gap: 1}}>
+                            <OutlinedInput
+                                startAdornment={<InputAdornment position="start">MD Ashraful Mollah :</InputAdornment>}
+                                placeholder='Enter price'
+                                type='number'
+                            />
+                            <OutlinedInput
+                                startAdornment={<InputAdornment position="start">MD Ashraful Mollah :</InputAdornment>}
+                                placeholder='Enter price'
+                                type='number'
+                            />
+                            <OutlinedInput
+                                startAdornment={<InputAdornment position="start">MD Ashraful Mollah :</InputAdornment>}
+                                placeholder='Enter price'
+                                type='number'
+                            />
+                        </Box>
+                    </Box>
+                    <Box>
+                        <FormControlLabel sx={{mb: 2}}
+                            control={
+                                <Switch onChange={handleChange} name="gilad" />
+                            }
+                            label="Enable VIP Price"
+                        />
+                        <Box sx={{display: 'grid', gap: 1}}>
+                            <OutlinedInput
+                                startAdornment={<InputAdornment position="start">Ashraful Mollah :</InputAdornment>}
+                                placeholder='Enter price'
+                                type='number'
+                            />
+                            <OutlinedInput
+                                startAdornment={<InputAdornment position="start">Ashraful Mollah :</InputAdornment>}
+                                placeholder='Enter price'
+                                type='number'
+                            />
+                            <OutlinedInput
+                                startAdornment={<InputAdornment position="start">Ashraful Mollah :</InputAdornment>}
+                                placeholder='Enter price'
+                                type='number'
+                            />
+                        </Box>
+                    </Box>
                 </div>
+                <Alert severity="info">
+                    <AlertTitle>Pricing Info</AlertTitle>
+                    <strong>VIP</strong> pricing priority is more than <strong>individual</strong>. And <strong>Individual</strong> pricing priority is more than <strong>default</strong> pricing.
+                </Alert>
             </CreateForm>
         </GeneralWrapper>
     )

@@ -24,7 +24,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = props => {   
     const { setIsAvatarDropdownOpen, setSideMenuOpenStatus, open, pageTitle } = props;
 
-    const handleDrawerOpen = () => {
+    const handleDrawerOpen = ( ev: React.SyntheticEvent ) => {
+        ev.stopPropagation();
         setSideMenuOpenStatus(!open);
         if( window.innerWidth <= 575 ) {
             setIsAvatarDropdownOpen(false);

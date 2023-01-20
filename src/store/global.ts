@@ -96,6 +96,10 @@ const STORE_SELECTORS = {
     },
     isAvatarDropdownOpen( state: InitialState ) {
         return state.avatorDropdownStatus
+    },
+    isPageBlur( state: InitialState ) {
+        if( window.innerWidth > 575 ) return;
+        return state.avatorDropdownStatus || state.sideMenuOpen;
     }
 }
 

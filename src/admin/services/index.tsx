@@ -25,12 +25,11 @@ import Skeletons from 'admin/services/skeletons';
 
 interface ServicesProps {
     services: {}[]
-    isResolving: boolean,
-    isSidebarOpen: boolean
+    isResolving: boolean
 }
 
 const Services: React.FC<ServicesProps> = ( props ) => {
-    const { services, isResolving, isSidebarOpen } = props;
+    const { services, isResolving } = props;
     const navigate = useNavigate();
 
     return (
@@ -62,7 +61,7 @@ const Services: React.FC<ServicesProps> = ( props ) => {
                 </div>
             )}
 
-            { !isResolving && !isSidebarOpen && (
+            { !isResolving && (
                 <AddNewServiceBtn onClick={() => navigate("create")} variant="extended" color="info" aria-label="add">
                     <AddIcon sx={{ mr: 1 }} />Add New
                 </AddNewServiceBtn>
@@ -74,12 +73,10 @@ const Services: React.FC<ServicesProps> = ( props ) => {
 
 const applyWithSelect = withSelect( (select: Function) => {
     const services = select('admin/service');
-    const global = select('global');
 
     return {
         services: services.getServices(),
         isResolving: services.getIsResolving('getServices'),
-        isSidebarOpen: global.getSideMenuOpenStatus()
     }
 } ) 
 

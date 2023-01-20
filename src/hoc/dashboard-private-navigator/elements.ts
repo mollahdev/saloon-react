@@ -26,13 +26,18 @@ const closedMixin = (theme: Theme): CSSObject => ({
   	},
 });
 
-export const PageWrapper = styled(Box)`
-	background-image: linear-gradient(108.81deg, #F5FBFF 14.86%, #F6F5FF 99.99%);
-	min-height: 100vh;
-	@media( max-width: 768px ) {
-		margin-left: 56px;
+export const PageWrapper = styled(Box)((props: {isblur: string}) => ({
+	backgroundImage: 'linear-gradient(108.81deg, #F5FBFF 14.86%, #F6F5FF 99.99%)',
+	minHeight: '100vh',
+	'@media( max-width: 768px )': {
+		marginLeft: '56px',
+		...( props.isblur === 'false' ? {} : {
+			filter: 'blur(5px)',
+			pointerEvents: 'none',
+			opacity: '.5'
+		} )
 	}
-`
+}))
 
 export const DrawerHeader = styled('div')(({ theme }) => ({
 	display: 'flex',

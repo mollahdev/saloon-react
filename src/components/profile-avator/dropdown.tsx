@@ -11,7 +11,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import InfoIcon from '@mui/icons-material/Info';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import AlarmOffIcon from '@mui/icons-material/AlarmOff';
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 /**
  * Internal dependencies 
  */
@@ -39,13 +39,13 @@ const AvatorDropdown: React.FC<AvatorDropdownProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDropdownOpen])
 
-    const onClickOutside = (ev: Event) => {
+    const onClickOutside = useCallback((ev: Event) => {
         const node = container.current! as HTMLElement;
         const target = ev.target as HTMLElement;
-        if( node && !node.contains(target) && node.getAttribute('open') !== null) {
+        if( node && !node.contains(target)) {
             setIsAvatarDropdownOpen(false)
         }
-    }
+    }, [])
 
     return (
         <Portal>
