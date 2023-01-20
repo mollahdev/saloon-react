@@ -17,6 +17,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import SaveIcon from '@mui/icons-material/Save';
 
 /**
  * Internal dependencies 
@@ -59,7 +60,7 @@ const Create: React.FC = () => {
                     <Box>
                         <FormControlLabel sx={{mb: 2}}
                             control={
-                                <Switch onChange={handleChange} name="gilad" />
+                                <Switch onChange={handleChange} name="individual_price_status" />
                             }
                             label="Enable Individual Price"
                         />
@@ -84,7 +85,7 @@ const Create: React.FC = () => {
                     <Box>
                         <FormControlLabel sx={{mb: 2}}
                             control={
-                                <Switch onChange={handleChange} name="gilad" />
+                                <Switch onChange={handleChange} name="vip_price_status" />
                             }
                             label="Enable VIP Price"
                         />
@@ -111,6 +112,21 @@ const Create: React.FC = () => {
                     <AlertTitle>Pricing Info</AlertTitle>
                     <strong>VIP</strong> pricing priority is more than <strong>individual</strong>. And <strong>Individual</strong> pricing priority is more than <strong>default</strong> pricing.
                 </Alert>
+                <FormControlLabel sx={{mt: 2}}
+                    control={
+                        <Switch onChange={handleChange} name="status" />
+                    }
+                    label="Active"
+                />
+                <Button
+                    startIcon={<SaveIcon />}
+                    variant="contained"
+                    fullWidth
+                    size='large'
+                    sx={{mt: 2}}
+                >
+                    <span>Save</span>
+                </Button>
             </CreateForm>
         </GeneralWrapper>
     )
